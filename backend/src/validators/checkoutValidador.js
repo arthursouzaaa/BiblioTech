@@ -1,0 +1,3 @@
+function validarDados (dados) {
+  
+}
