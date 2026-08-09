@@ -60,10 +60,22 @@ Instale as dependências:
   npm install
 ```
 
+Saia do diretório do back-end:
+
+```bash
+  cd ..
+```
+
+Entre no diretório do front-end:
+
+```bash
+  cd BiblioTech/frontend
+```
+
 Inicie o servidor.
 
 ```bash
-  npm run start
+  npm run dev
 ```
 
 ## 👨‍💻 Autores
