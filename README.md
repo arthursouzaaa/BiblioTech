@@ -31,6 +31,11 @@ Clone o projeto:
 ```bash
   git clone https://github.com/arthursouzaaa/BiblioTech.git
 ```
+Abra o PowerShell como administrador e execute:
+
+```bash
+  Set-ExecutionPolicy Unrestricted
+```
 
 Entre no diretório do front-end:
 
