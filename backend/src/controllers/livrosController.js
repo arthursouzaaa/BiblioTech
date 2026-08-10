@@ -1,26 +1,25 @@
-const validador = require('../validators/checkoutValidador')
-const database = require("../config/database");
+const validador = require("../validators/livrosValidador");
 
 async function adicionarLivro(req, res) {
   try {
-    const { titulo, author, ano, categoria } = req.body;
+    const { titulo, author, categoria, ano } = req.body;
 
     const validacao = await validador.validarDados({
       titulo: titulo,
       author: author,
-      ano: ano,
       categoria: categoria,
+      ano: ano,
     });
 
     if (!validacao.valido) {
       return res.status(400).json(validacao);
     }
 
-    const livro = await model.criar_livro(
+    const livro = await model.criarLivro(
       validacao.dados.titulo,
       validacao.dados.author,
-      validacao.dados.ano,
       validacao.dados.categoria,
+      validacao.dados.ano,
     );
 
     res.status(201).json({ mensagem: "Livro criado" });
@@ -34,25 +33,25 @@ async function editarLivro(req, res) {
   try {
     const id = req.params.id;
 
-    const { titulo, author, ano, categoria } = req.body;
+    const { titulo, author, categoria, ano } = req.body;
 
     const validacao = await validador.validarDados({
       titulo: titulo,
       author: author,
-      ano: ano,
       categoria: categoria,
+      ano: ano,
     });
 
     if (!validacao.valido) {
       return res.status(400).json(validacao);
     }
 
-    const livro = await model.criar_livro(
+    const livro = await model.editarLivro(
       id,
       validacao.dados.titulo,
       validacao.dados.author,
-      validacao.dados.ano,
       validacao.dados.categoria,
+      validacao.dados.ano,
     );
 
     res.status(200).json({ mensagem: "Livro editado" });
@@ -63,7 +62,7 @@ async function editarLivro(req, res) {
   }
 }
 
-async function listarLivros(res) {
+async function listarLivros(req, res) {
   try {
     const livros = await model.listarLivros();
 
@@ -105,18 +104,18 @@ async function listarPorCategoria(req, res) {
   }
 }
 
-async function listarPorNome(req, res) {
+async function listarPorTitulo(req, res) {
   try {
-    const { nome } = req.query;
+    const { titulo } = req.query;
 
-    if (!nome) {
-      return res.status(404).json({ erro: "Nome invalido" });
+    if (!titulo) {
+      return res.status(404).json({ erro: "Titulo invalido" });
     }
-    if (nome.length === 0) {
-      return res.status(404).json({ erro: "Digite um nome" });
+    if (titulo.length === 0) {
+      return res.status(404).json({ erro: "Digite um titulo" });
     }
 
-    const livro = await model.listarPorNome(nome);
+    const livro = await model.listarPorTitulo(titulo);
 
     if (!livro) {
       return res.status(404).json({ erro: "Livro indefinido" });
@@ -133,10 +132,33 @@ async function listarPorNome(req, res) {
   }
 }
 
+async function deletarLivro(req, res) {
+  try {
+    const { id, titulo, author, categoria, ano } = req.query;
+
+    const validacao = await validador.validarDados({
+      titulo: titulo,
+      author: author,
+      categoria: categoria,
+      ano: ano,
+    });
+
+    if (!validacao.valido) {
+      return res.status(404).json(validacao);
+    }
+
+    res.status(200).json({ mensagem: "Livro excluido com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao excluir livro", error);
+    res.status(500).json({ erro: "Erro interno no servidor" });
+  }
+}
+
 module.exports = {
   adicionarLivro,
   editarLivro,
   listarLivros,
   listarPorCategoria,
-  listarPorNome,
+  listarPorTitulo,
+  deletarLivro,
 };

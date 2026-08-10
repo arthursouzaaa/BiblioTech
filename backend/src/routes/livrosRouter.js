@@ -9,7 +9,7 @@ module.exports = (app) => {
     auth.verificarToken,
     controller.listarPorCategoria,
   );
-  app.get("/livro/nome", auth.verificarToken, controller.listarPorNome);
+  app.get("/livro/nome", auth.verificarToken, controller.listarPorTitulo);
   app.put("/livro/editar/:id", auth.verificarToken, controller.editarLivro);
-  app.delete("/livro/:id", auth.verificarToken, controller);
+  app.delete("/livro/:id", auth.verificarToken, controller.deletarLivro);
 };
