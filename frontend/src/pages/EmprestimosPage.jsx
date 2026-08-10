@@ -18,7 +18,7 @@ export default function EmprestimosPage() {
         (e) =>
           e.livro.toLowerCase().includes(busca.toLowerCase()) ||
           e.usuario.toLowerCase().includes(busca.toLowerCase())
-      ),
+      ),            
     [busca]
   );
 
