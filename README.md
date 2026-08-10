@@ -24,7 +24,7 @@ A BiblioTech é um projeto desenvolvido com o objetivo de gerenciar livros, empr
 
 ## 🛠️ Instalação e Uso
 
-Instale a versão mais recente do [Node.js LTS](https://nodejs.org/pt-br/download) no navegador de sua preferência e abra um novo navegador.
+Instale a versão mais recente do [Node.js LTS](https://nodejs.org/pt-br/download) no navegador de sua preferência e abra um novo terminal.
 
 Clone o projeto:
 
