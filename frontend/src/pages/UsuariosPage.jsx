@@ -10,17 +10,19 @@ import { USUARIOS_MOCK } from "../data/mockData";
 export default function UsuariosPage() {
   const [busca, setBusca] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
 
   const filtrados = useMemo(
     () => USUARIOS_MOCK.filter((u) => u.nome.toLowerCase().includes(busca.toLowerCase())),
     [busca]
   );
 
-  // Só visual por enquanto — Paizão troca isso pela chamada real
-  // POST /api/usuarios e fecha o modal quando a API responder com sucesso.
   function handleSalvar(e) {
     e.preventDefault();
     setModalAberto(false);
+    setNome("");
+    setEmail("");
   }
 
   return (
@@ -58,8 +60,8 @@ export default function UsuariosPage() {
 
       <Modal title="Novo Usuário" isOpen={modalAberto} onClose={() => setModalAberto(false)}>
         <form onSubmit={handleSalvar}>
-          <InputField icon={User} label="Nome completo" placeholder="Ex: Ana Beatriz" />
-          <InputField icon={Mail} label="E-mail" type="email" placeholder="Ex: ana@email.com" />
+          <InputField icon={User} label="Nome completo" placeholder="Ex: Ana Beatriz" value={nome} onChange={setNome} />
+          <InputField icon={Mail} label="E-mail" type="email" placeholder="Ex: ana@email.com" value={email} onChange={setEmail} />
 
           <div className="flex gap-3 mt-6">
             <button

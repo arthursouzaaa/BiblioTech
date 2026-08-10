@@ -11,6 +11,10 @@ import { EMPRESTIMOS_MOCK } from "../data/mockData";
 export default function EmprestimosPage() {
   const [busca, setBusca] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
+  const [livro, setLivro] = useState("");
+  const [usuario, setUsuario] = useState("");
+  const [dataEmprestimo, setDataEmprestimo] = useState("");
+  const [dataDevolucao, setDataDevolucao] = useState("");
 
   const filtrados = useMemo(
     () =>
@@ -22,11 +26,13 @@ export default function EmprestimosPage() {
     [busca]
   );
 
-  // Só visual por enquanto — Paizão troca isso pela chamada real
-  // POST /api/emprestimos e fecha o modal quando a API responder com sucesso.
   function handleSalvar(e) {
     e.preventDefault();
     setModalAberto(false);
+    setLivro("");
+    setUsuario("");
+    setDataEmprestimo("");
+    setDataDevolucao("");
   }
 
   return (
@@ -68,10 +74,10 @@ export default function EmprestimosPage() {
 
       <Modal title="Novo Empréstimo" isOpen={modalAberto} onClose={() => setModalAberto(false)}>
         <form onSubmit={handleSalvar}>
-          <InputField icon={BookOpen} label="Livro" placeholder="Ex: 1984" />
-          <InputField icon={User} label="Usuário" placeholder="Ex: Ana Beatriz" />
-          <InputField icon={Calendar} label="Data do empréstimo" type="date" />
-          <InputField icon={Calendar} label="Data de devolução" type="date" />
+          <InputField icon={BookOpen} label="Livro" placeholder="Ex: 1984" value={livro} onChange={setLivro} />
+          <InputField icon={User} label="Usuário" placeholder="Ex: Ana Beatriz" value={usuario} onChange={setUsuario} />
+          <InputField icon={Calendar} label="Data do empréstimo" type="date" value={dataEmprestimo} onChange={setDataEmprestimo} />
+          <InputField icon={Calendar} label="Data de devolução" type="date" value={dataDevolucao} onChange={setDataDevolucao} />
 
           <div className="flex gap-3 mt-6">
             <button
