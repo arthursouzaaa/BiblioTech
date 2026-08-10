@@ -26,15 +26,16 @@ A BiblioTech é um projeto desenvolvido com o objetivo de gerenciar livros, empr
 
 Instale a versão mais recente do [Node.js LTS](https://nodejs.org/pt-br/download) no navegador de sua preferência e abra um novo terminal.
 
-Clone o projeto:
-
-```bash
-  git clone https://github.com/arthursouzaaa/BiblioTech.git
-```
 Abra o PowerShell como administrador e execute:
 
 ```bash
   Set-ExecutionPolicy Unrestricted
+```
+
+Clone o projeto:
+
+```bash
+  git clone https://github.com/arthursouzaaa/BiblioTech.git
 ```
 
 Entre no diretório do front-end:
