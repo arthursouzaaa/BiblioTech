@@ -134,18 +134,7 @@ async function listarPorTitulo(req, res) {
 
 async function deletarLivro(req, res) {
   try {
-    const { id, titulo, author, categoria, ano } = req.query;
-
-    const validacao = await validador.validarDados({
-      titulo: titulo,
-      author: author,
-      categoria: categoria,
-      ano: ano,
-    });
-
-    if (!validacao.valido) {
-      return res.status(404).json(validacao);
-    }
+    const { id } = req.query;
 
     res.status(200).json({ mensagem: "Livro excluido com sucesso!" });
   } catch (error) {
