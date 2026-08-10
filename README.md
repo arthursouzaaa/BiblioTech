@@ -69,7 +69,7 @@ Saia do diretório do back-end:
 Entre no diretório do front-end:
 
 ```bash
-  cd BiblioTech/frontend
+  cd frontend
 ```
 
 Inicie o servidor.
