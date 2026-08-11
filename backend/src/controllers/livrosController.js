@@ -1,12 +1,13 @@
 const validador = require("../validators/livrosValidador");
+const model = require("../models/livrosModel");
 
 async function adicionarLivro(req, res) {
   try {
-    const { titulo, author, categoria, ano } = req.body;
+    const { titulo, autor, categoria, ano } = req.body;
 
     const validacao = await validador.validarDados({
       titulo: titulo,
-      author: author,
+      autor: autor,
       categoria: categoria,
       ano: ano,
     });
@@ -17,7 +18,7 @@ async function adicionarLivro(req, res) {
 
     const livro = await model.criarLivro(
       validacao.dados.titulo,
-      validacao.dados.author,
+      validacao.dados.autor,
       validacao.dados.categoria,
       validacao.dados.ano,
     );
@@ -31,13 +32,17 @@ async function adicionarLivro(req, res) {
 
 async function editarLivro(req, res) {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
 
-    const { titulo, author, categoria, ano } = req.body;
+    if (!id || isNaN(id) || Number(id) <= 0) {
+      return res.status(400).json({ erro: "ID inválido" });
+    }
+
+    const { titulo, autor, categoria, ano } = req.body;
 
     const validacao = await validador.validarDados({
       titulo: titulo,
-      author: author,
+      autor: autor,
       categoria: categoria,
       ano: ano,
     });
@@ -49,7 +54,7 @@ async function editarLivro(req, res) {
     const livro = await model.editarLivro(
       id,
       validacao.dados.titulo,
-      validacao.dados.author,
+      validacao.dados.autor,
       validacao.dados.categoria,
       validacao.dados.ano,
     );
@@ -66,9 +71,6 @@ async function listarLivros(req, res) {
   try {
     const livros = await model.listarLivros();
 
-    if (!livros) {
-      return res.status(404).json({ erro: "Erro ao listar livros" });
-    }
     if (livros.length === 0) {
       return res.status(404).json({ erro: "Nenhum livro encontrado" });
     }
@@ -134,7 +136,19 @@ async function listarPorTitulo(req, res) {
 
 async function deletarLivro(req, res) {
   try {
-    const { id } = req.query;
+    const { id } = req.params;
+
+    if (!id || isNaN(id) || Number(id) <= 0) {
+      return res.status(400).json({ erro: "ID inválido" });
+    }
+
+    const livro = await model.listarPorId(id);
+
+    if (!livro || livro.length === 0) {
+      return res.status(404).json({ erro: "Livro não encontrado" });
+    }
+
+    const deletarLivro = await model.deletarLivro(id);
 
     res.status(200).json({ mensagem: "Livro excluido com sucesso!" });
   } catch (error) {

@@ -1,10 +1,49 @@
-const validador = require('../validators/usuarioValidador');
-const model = require('../models/usuarioModel'); // Adicionei a importação do model baseada no seu uso
-const database = require("../config/database");
+const validador = require("../validators/usuariosValidador");
+const model = require("../models/usuariosModel");
+
+async function adicionarUsuario(req, res) {
+  try {
+    const { nome, email, senha, perfil } = req.body;
+
+    const validacao = await validador.validarDados({
+      nome: nome,
+      email: email,
+      senha: senha,
+      perfil: perfil,
+    });
+
+    if (!validacao.valido) {
+      return res.status(400).json(validacao);
+    }
+
+    const usuarioExistente = await model.buscarUsuarioPorEmail(email);
+    if (usuarioExistente) {
+      return res.status(409).json({ erro: "E-mail já cadastrado" });
+    }
+
+    const usuario = await model.criarUsuario({
+      nome: validacao.dados.nome,
+      email: validacao.dados.email,
+      senha_hash: validacao.dados.senha,
+      perfil: validacao.dados.perfil,
+    });
+
+    res.status(201).json({
+      mensagem: "Usuário cadastrado com sucesso!",
+    });
+  } catch (error) {
+    console.error("Erro no registro:", error);
+    res.status(500).json({ erro: "Erro interno do servidor" });
+  }
+}
 
 async function editarUsuario(req, res) {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
+
+    if (!id || isNaN(id) || Number(id) <= 0) {
+      return res.status(400).json({ erro: "ID inválido" });
+    }
 
     const { nome, email, senha, perfil } = req.body;
 
@@ -19,12 +58,12 @@ async function editarUsuario(req, res) {
       return res.status(400).json(validacao);
     }
 
-    const usuario = await model.editar_usuario(
+    const usuario = await model.editarUsuario(
       id,
       validacao.dados.nome,
       validacao.dados.email,
       validacao.dados.senha,
-      validacao.dados.perfil
+      validacao.dados.perfil,
     );
 
     res.status(200).json({ mensagem: "Usuário editado" });
@@ -76,15 +115,20 @@ async function listarPorEmail(req, res) {
   }
 }
 
-
 async function deletarUsuario(req, res) {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
 
-    const usuarioDeletado = await model.deletar_usuario(id);
+    if (!id || isNaN(id) || Number(id) <= 0) {
+      return res.status(400).json({ erro: "ID inválido" });
+    }
+
+    const usuarioDeletado = await model.deletarUsuario(id);
 
     if (!usuarioDeletado) {
-      return res.status(404).json({ erro: "Usuário não encontrado para deletar" });
+      return res
+        .status(404)
+        .json({ erro: "Usuário não encontrado para deletar" });
     }
 
     res.status(200).json({ mensagem: "Usuário deletado" });
@@ -95,8 +139,9 @@ async function deletarUsuario(req, res) {
 }
 
 module.exports = {
+  adicionarUsuario,
   editarUsuario,
   listarUsuarios,
   listarPorEmail,
-  deletarUsuario
+  deletarUsuario,
 };

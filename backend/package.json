@@ -1,24 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "pg": "^8.22.0"
-  }
-}
-=======
   "name": "biblioteca-backend",
   "version": "1.0.0",
   "description": "Backend da aplicação de gerenciamento de biblioteca",
@@ -45,4 +25,3 @@
     "nodemon": "^2.0.20"
   }
 }
->>>>>>> cd8243902053d76d7623fe868899cf47a8d351b1
