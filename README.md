@@ -1,90 +1,121 @@
-# 📚 BiblioTech - Sistema de Gerenciamento de Livros 
+# 📚 BiblioTech - Sistema de Gerenciamento de Biblioteca
 
-## ✨ Sobre o Projeto
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Express](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge&logo=express&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)
 
-A BiblioTech é um projeto desenvolvido com o objetivo de gerenciar livros, empréstimos e autores de uma biblioteca. Desenvolvida com as melhores práticas de um sistema fullstack completo, o sistema proporciona uma navegação fluida e design totalmente responsivo.
+A **BiblioTech** é uma aplicação web full-stack desenvolvida para automatizar e simplificar a gestão de acervos, usuários e empréstimos em bibliotecas. O sistema conta com controle de acesso baseado em cargos (RBAC) e autenticação segura via JSON Web Token (JWT).
+
+---
+
+## 📌 Sumário
+
+- [Visão Geral](#-visão-geral)
+- [Funcionalidades Principais](#-funcionalidades-principais)
+- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Pré-requisitos](#-pré-requisitos)
+- [Instalação e Configuração](#-instalação-e-configuração)
+- [Variáveis de Ambiente](#-variáveis-de-ambiente)
+- [Documentação da API](#-documentação-da-api)
+- [Licença](#-licença)
+
+---
+
+## 🔍 Visão Geral
+
+O projeto resolve o problema de controle manual de livros e prazos de devolução. A plataforma separa a experiência do usuário em dois perfis principais:
+- **Administrador:** Responsável pela manutenção do acervo, gestão de membros e monitoramento geral da plataforma.
+- **Usuário Comum:** Pode navegar pelo catálogo, verificar disponibilidade em tempo real e realizar solicitações de empréstimo/devolução.
+
+---
+
+## ✨ Funcionalidades Principais
+
+- **Autenticação e Segurança:** Login/Registro seguro com senhas criptografadas via `bcrypt` e sessões gerenciadas por `JWT`.
+- **Controle de Acesso (RBAC):** Rotas protegidas no frontend e middleware de permissão no backend.
+- **Gestão de Acervo:** CRUD completo de livros com controle automático de status (*Disponível* / *Emprestado*).
+- **Gestão de Empréstimos:** Histórico detalhado com datas de retirada e limite para devolução.
+- **Dashboard Dinâmico:** Métricas e resumos adaptados ao tipo de conta autenticada.
+- **API Swagger:** Documentação interativa e testável diretamente pelo navegador.
+
+---
 
 ## 🚀 Tecnologias Utilizadas
 
-* HTML5, CSS3 e JavaScript Vanilla — estrutura, estilização e lógica da aplicação;
-* React — desenvolvimento da interface e componentes do front-end;
-* React DOM — integração do React com o DOM da aplicação;
-* Lucide React — utilização de ícones na interface;
-* Tailwind CSS — estilização e criação da interface responsiva;
-* Vite — ferramenta de desenvolvimento e build do front-end;
-* Node.js — ambiente de execução do back-end;
-* Express.js — criação da API e gerenciamento das rotas do back-end;
-* CORS — configuração do acesso entre front-end e back-end;
-* bcrypt — criptografia/hash de senhas;
-* JSON Web Token (JWT) — autenticação e gerenciamento de sessões;
-* dotenv — gerenciamento de variáveis de ambiente;
-* Nodemon — atualização automática do servidor durante o desenvolvimento;
-* PostCSS e Autoprefixer — processamento e compatibilidade dos estilos CSS;
-* Oxlint — análise e verificação do código JavaScript/React.
+### Frontend
+- **React** + **Vite** — Construção de interface rápida e reativa.
+- **Tailwind CSS** — Estilização moderna e responsiva.
+- **Lucide React** — Biblioteca de ícones.
+- **Axios** — Cliente HTTP para integração com a API.
 
-## 🛠️ Instalação e Uso
+### Backend
+- **Node.js** + **Express** — Arquitetura de API RESTful.
+- **PostgreSQL** — Banco de dados relacional e persistência de dados.
+- **JSON Web Token (JWT)** & **bcrypt** — Autenticação e hash de senhas.
+- **Swagger UI** — Documentação padronizada da API (OpenAPI).
+- **dotenv** & **CORS** — Configurações de ambiente e segurança entre origens.
 
-Instale a versão mais recente do [Node.js LTS](https://nodejs.org/pt-br/download) no navegador de sua preferência e abra um novo terminal.
+---
 
-Abra o PowerShell como administrador e execute:
+## 🛠️ Pré-requisitos
 
-```bash
-  Set-ExecutionPolicy Unrestricted
-```
+Certifique-se de ter instalado em sua máquina:
+- [Node.js](https://nodejs.org/) (Versão 18 ou superior)
+- [PostgreSQL](https://www.postgresql.org/) (Versão 14 ou superior)
+- [Git](https://git-scm.com/)
 
-Clone o projeto:
+---
 
-```bash
-  git clone https://github.com/arthursouzaaa/BiblioTech.git
-```
+# 📦 Instalação e Configuração
 
-Entre no diretório do front-end:
+# 1. Clone o repositório
 
-```bash
-  cd BiblioTech/frontend
-```
+git clone https://github.com/arthursouzaaa/BiblioTech.git
 
-Instale as dependências:
+cd BiblioTech
 
-```bash
-  npm install
-```
+Configurando o Backend
 
-Saia do diretório do front-end:
+Acesse a pasta do servidor
+cd backend
 
-```bash
-  cd ..
-```
+# Instale as dependências
+npm install
 
-Entre no diretório do back-end:
+Configure o banco de dados PostgreSQL e execute as migrações/scripts SQL
+(Execute seu arquivo .sql de criação de tabelas no PostgreSQL)
 
-```bash
-  cd backend
-```
+Inicie o servidor em modo de desenvolvimento
+npm run dev
 
-Instale as dependências:
+# Configurando o Frontend
 
-```bash
-  npm install
-```
+Em outro terminal, acesse a pasta da interface
+cd frontend
 
-Saia do diretório do back-end:
+Instale as dependências
+npm install
 
-```bash
-  cd ..
-```
+Inicie a aplicação React
+npm run dev
 
-Entre no diretório do front-end:
+Fragmento do código
+Configurações do Servidor
+PORT=3000
 
-```bash
-  cd frontend
-```
+# Configurações do Banco de Dados PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=seu_usuario
+DB_PASSWORD=sua_senha
+DB_NAME=bibliotech_db
 
-Inicie o servidor.
-
-```bash
-  npm run dev
-```
+Segredo JWT
+JWT_SECRET=sua_chave_secreta_aqui
 
 ## 👨‍💻 Autores
 
