@@ -10,15 +10,23 @@ async function criarEmprestimo(livro_id, usuario_id, data_emprestimo, data_devol
   return result.rows[0];
 }
 
-async function listarEmprestimos() {
-  const query = `
+async function listarEmprestimos(usuario_id = null) {
+  let query = `
     SELECT e.*, l.titulo as livro_titulo, u.nome as usuario_nome
     FROM emprestimos e
     JOIN livros l ON e.livro_id = l.id
     JOIN usuarios u ON e.usuario_id = u.id
-    ORDER BY e.id;
   `;
-  const result = await pool.query(query);
+  const params = [];
+
+  if (usuario_id) {
+    query += ` WHERE e.usuario_id = $1`;
+    params.push(usuario_id);
+  }
+
+  query += ` ORDER BY e.id;`;
+
+  const result = await pool.query(query, params);
   return result.rows;
 }
 

@@ -1,33 +1,34 @@
+// src/routes/usuariosRouter.js
 module.exports = (app) => {
   const controller = require("../controllers/usuariosController");
   const auth = require("../controllers/authController");
 
   app.post(
-    "/usuario",
+    "/api/usuario",
     auth.verificarToken,
     auth.verificarAdmin,
     controller.adicionarUsuario,
   );
   app.get(
-    "/usuarios",
+    "/api/usuarios",
     auth.verificarToken,
     auth.verificarAdmin,
     controller.listarUsuarios,
   );
   app.get(
-    "/usuario/email/",
+    "/api/usuario/email/",
     auth.verificarToken,
     auth.verificarAdmin,
     controller.listarPorEmail,
   );
   app.put(
-    "/usuario/editar/:id",
+    "/api/usuario/editar/:id",
     auth.verificarToken,
     auth.verificarAdmin,
     controller.editarUsuario,
   );
   app.delete(
-    "/usuario/:id",
+    "/api/usuario/:id",
     auth.verificarToken,
     auth.verificarAdmin,
     controller.deletarUsuario,

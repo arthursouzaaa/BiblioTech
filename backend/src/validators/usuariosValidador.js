@@ -14,7 +14,6 @@ async function validarDados({ nome, email, senha, perfil }) {
   if (!senha || senha.length < 6) {
     erros.push("Senha deve ter pelo menos 6 caracteres");
   }
-  // perfil é opcional, pode ignorar ou validar se fornecido
 
   if (erros.length > 0) {
     return { valido: false, erros };
@@ -29,7 +28,7 @@ async function validarDados({ nome, email, senha, perfil }) {
       nome: nome.trim(),
       email: email.trim(),
       senha: senhaHash,
-      perfil: perfil || "comum",
+      perfil: perfil,
     },
   };
 }

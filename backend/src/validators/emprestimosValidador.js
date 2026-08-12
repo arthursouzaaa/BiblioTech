@@ -63,7 +63,6 @@ function validarDados({
   };
 }
 
-// Validador específico para listagem (apenas verifica se há dados)
 function listarEmprestimos(emprestimos) {
   if (!emprestimos || emprestimos.length === 0) {
     return { valido: false, erro: "Nenhum empréstimo encontrado" };

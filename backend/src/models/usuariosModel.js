@@ -17,7 +17,7 @@ async function buscarUsuarioPorEmail(email) {
 }
 
 async function listarUsuarios() {
-  const query = `SELECT id, nome, email FROM usuarios ORDER BY id;`;
+  const query = `SELECT id, nome, email, perfil FROM usuarios ORDER BY id;`;
   const result = await pool.query(query);
   return result.rows;
 }

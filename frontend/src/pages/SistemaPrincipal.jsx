@@ -5,15 +5,16 @@ import LivrosPage from "./LivrosPage";
 import UsuariosPage from "./UsuariosPage";
 import EmprestimosPage from "./EmprestimosPage";
 
-const NAV_ITEMS = [
-  { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { key: "livros", label: "Livros", icon: BookOpen },
-  { key: "usuarios", label: "Usuários", icon: Users },
-  { key: "emprestimos", label: "Empréstimos", icon: RefreshCcw },
-];
-
-export default function SistemaPrincipal({ onSair }) {
+export default function SistemaPrincipal({ onSair, usuario }) {
   const [pagina, setPagina] = useState("dashboard");
+  const isAdmin = usuario?.perfil === "administrador";
+
+  const NAV_ITEMS = [
+    { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { key: "livros", label: "Livros", icon: BookOpen },
+    ...(isAdmin ? [{ key: "usuarios", label: "Usuários", icon: Users }] : []),
+    { key: "emprestimos", label: "Empréstimos", icon: RefreshCcw },
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
@@ -43,7 +44,7 @@ export default function SistemaPrincipal({ onSair }) {
           </div>
 
           <div className="flex items-center gap-3 text-white text-sm">
-            <span className="font-medium">Andreson</span>
+            <span className="font-medium">{usuario?.nome || "Usuário"}</span>
             <button
               onClick={onSair}
               className="flex items-center gap-1 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-colors"
@@ -55,10 +56,10 @@ export default function SistemaPrincipal({ onSair }) {
       </nav>
 
       <main className="max-w-7xl mx-auto px-6 py-8">
-        {pagina === "dashboard" && <DashboardPage />}
-        {pagina === "livros" && <LivrosPage />}
-        {pagina === "usuarios" && <UsuariosPage />}
-        {pagina === "emprestimos" && <EmprestimosPage />}
+        {pagina === "dashboard" && <DashboardPage usuario={usuario} />}
+        {pagina === "livros" && <LivrosPage usuario={usuario} />}
+        {pagina === "usuarios" && isAdmin && <UsuariosPage usuario={usuario} />}
+        {pagina === "emprestimos" && <EmprestimosPage usuario={usuario} />}
       </main>
     </div>
   );

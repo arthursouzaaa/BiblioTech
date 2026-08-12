@@ -1,17 +1,16 @@
+// src/controllers/livrosController.js
 const validador = require("../validators/livrosValidador");
 const model = require("../models/livrosModel");
 
 async function adicionarLivro(req, res) {
   try {
     const { titulo, autor, categoria, ano } = req.body;
-
     const validacao = await validador.validarDados({
-      titulo: titulo,
-      autor: autor,
-      categoria: categoria,
-      ano: ano,
+      titulo,
+      autor,
+      categoria,
+      ano,
     });
-
     if (!validacao.valido) {
       return res.status(400).json(validacao);
     }
@@ -22,7 +21,6 @@ async function adicionarLivro(req, res) {
       validacao.dados.categoria,
       validacao.dados.ano,
     );
-
     res.status(201).json({ mensagem: "Livro criado" });
   } catch (error) {
     console.error("Erro ao criar livro", error);
@@ -33,20 +31,17 @@ async function adicionarLivro(req, res) {
 async function editarLivro(req, res) {
   try {
     const { id } = req.params;
-
     if (!id || isNaN(id) || Number(id) <= 0) {
       return res.status(400).json({ erro: "ID inválido" });
     }
 
     const { titulo, autor, categoria, ano } = req.body;
-
     const validacao = await validador.validarDados({
-      titulo: titulo,
-      autor: autor,
-      categoria: categoria,
-      ano: ano,
+      titulo,
+      autor,
+      categoria,
+      ano,
     });
-
     if (!validacao.valido) {
       return res.status(400).json(validacao);
     }
@@ -58,22 +53,23 @@ async function editarLivro(req, res) {
       validacao.dados.categoria,
       validacao.dados.ano,
     );
+    if (!livro) {
+      return res.status(404).json({ erro: "Livro não encontrado" });
+    }
 
     res.status(200).json({ mensagem: "Livro editado" });
   } catch (error) {
     console.error("Erro ao editar livro", error);
-
     res.status(500).json({ erro: "Erro interno no servidor" });
   }
 }
 
 async function listarLivros(req, res) {
   try {
-    const livros = await model.listarLivros();
+    const usuarioLogado = req.usuario;
+    const apenasDisponiveis = usuarioLogado.perfil !== "administrador";
 
-    if (livros.length === 0) {
-      return res.status(404).json({ erro: "Nenhum livro encontrado" });
-    }
+    const livros = await model.listarLivros(apenasDisponiveis);
 
     res.status(200).json(livros);
   } catch (error) {
@@ -85,19 +81,14 @@ async function listarLivros(req, res) {
 async function listarPorCategoria(req, res) {
   try {
     const { categoria } = req.query;
-
-    if (!categoria) {
-      return res.status(404).json({ erro: "Categoria invalida" });
-    }
-    if (categoria.length === 0) {
-      return res.status(404).json({ erro: "Digite uma categoria" });
+    if (!categoria || categoria.length === 0) {
+      return res.status(400).json({ erro: "Categoria inválida" });
     }
 
-    const livro = await model.listarPorCategoria(categoria);
+    const usuarioLogado = req.usuario;
+    const apenasDisponiveis = usuarioLogado.perfil !== "administrador";
 
-    if (!livro || livro.length === 0) {
-      return res.status(404).json({ erro: "Nenhum livro encontrado" });
-    }
+    const livro = await model.listarPorCategoria(categoria, apenasDisponiveis);
 
     res.status(200).json(livro);
   } catch (error) {
@@ -109,23 +100,14 @@ async function listarPorCategoria(req, res) {
 async function listarPorTitulo(req, res) {
   try {
     const { titulo } = req.query;
-
-    if (!titulo) {
-      return res.status(404).json({ erro: "Titulo invalido" });
-    }
-    if (titulo.length === 0) {
-      return res.status(404).json({ erro: "Digite um titulo" });
+    if (!titulo || titulo.length === 0) {
+      return res.status(400).json({ erro: "Título inválido" });
     }
 
-    const livro = await model.listarPorTitulo(titulo);
+    const usuarioLogado = req.usuario;
+    const apenasDisponiveis = usuarioLogado.perfil !== "administrador";
 
-    if (!livro) {
-      return res.status(404).json({ erro: "Livro indefinido" });
-    }
-
-    if (livro.length === 0) {
-      return res.status(404).json({ erro: "Nenhum livro encontrado" });
-    }
+    const livro = await model.listarPorTitulo(titulo, apenasDisponiveis);
 
     res.status(200).json(livro);
   } catch (error) {
@@ -137,20 +119,17 @@ async function listarPorTitulo(req, res) {
 async function deletarLivro(req, res) {
   try {
     const { id } = req.params;
-
     if (!id || isNaN(id) || Number(id) <= 0) {
       return res.status(400).json({ erro: "ID inválido" });
     }
 
     const livro = await model.listarPorId(id);
-
-    if (!livro || livro.length === 0) {
+    if (!livro) {
       return res.status(404).json({ erro: "Livro não encontrado" });
     }
 
     const deletarLivro = await model.deletarLivro(id);
-
-    res.status(200).json({ mensagem: "Livro excluido com sucesso!" });
+    res.status(200).json({ mensagem: "Livro excluído com sucesso!" });
   } catch (error) {
     console.error("Erro ao excluir livro", error);
     res.status(500).json({ erro: "Erro interno no servidor" });
